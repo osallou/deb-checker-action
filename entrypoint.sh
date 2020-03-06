@@ -3,7 +3,10 @@
 set -e
 
 echo "build source package"
-dpkg-source -b
+dpkg-source -b .
+
+echo "install build deps"
+mk-build-deps --install --tool='apt-get -o Debug::pkgProblemResolver=yes --no-install-recommends --yes' debian/control
 
 echo "test binary build"
 quilt push -a

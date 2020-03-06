@@ -6,6 +6,8 @@ echo "install build deps"
 mk-build-deps --install --tool='apt-get -o Debug::pkgProblemResolver=yes --no-install-recommends --yes' debian/control
 
 echo "apply patches"
+export QUILT_PATCHES=debian/patches
+export QUILT_REFRESH_ARGS="-p ab --no-timestamps --no-index"
 quilt push -a 
 echo "test binary build"
 fakeroot debian/rules clean

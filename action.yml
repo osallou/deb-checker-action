@@ -3,12 +3,12 @@ name: 'deb-checker'
 description: 'Test build of a debian package with additional checks'
 inputs:
   err-on-lint:
-    description: 'fail on all lintian outputs'
+    description: 'fail on lintian warnings'
     required: false
     default: 'false'
 outputs:
-  lint:
-    description: 'lintian status'
+  debversion:
+    description: 'debian package version'
 runs:
   using: 'docker'
   image: 'Dockerfile'

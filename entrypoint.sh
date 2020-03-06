@@ -1,26 +1,23 @@
 #!/bin/bash -l
 
+set -e
 
+echo "build source package"
+dpkg-source -b
+
+echo "test binary build"
 quilt push -a
 fakeroot debian/rules clean
 fakeroot debian/rules binary
 
-lintout=`lintian -I --pedantic ../*.deb`
-lintexit=$?
 
-ERRONLINT=0
+
 if [ "a$1" == "atrue"]; then
-	ERRONLINT=1
-fi
-
-if [ ${linkexit} -eq 0 ]; then
-    echo ::set-output name=lint::success
+  lintian -I --pedantic --fail-on-warnings ../*.deb
 else
-    echo ::set-output name=lint::error
+  lintian -I --pedantic  ../*.deb
 fi
 
-if [ ${ERRONLINT} -eq 1 ]; then
-   echo "test lintian exit code"
-   exit lintexit
+$version=`dpkg-parsechangelog --show-field Version`
+echo ::set-output name=debversion::$version
 
-fi

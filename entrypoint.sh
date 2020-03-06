@@ -8,7 +8,9 @@ mk-build-deps --install --tool='apt-get -o Debug::pkgProblemResolver=yes --no-in
 echo "apply patches"
 export QUILT_PATCHES=debian/patches
 export QUILT_REFRESH_ARGS="-p ab --no-timestamps --no-index"
-quilt push -a 
+if [ -e debian/patches/series ]; then
+  quilt push -a
+fi
 echo "test binary build"
 fakeroot debian/rules clean
 fakeroot debian/rules binary
@@ -21,6 +23,7 @@ else
   lintian -I --pedantic  ../*.deb
 fi
 
-$version=`dpkg-parsechangelog --show-field Version`
+version=`dpkg-parsechangelog --show-field Version`
+echo "deb version: $version"
 echo ::set-output name=debversion::$version
 

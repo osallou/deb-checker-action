@@ -2,14 +2,12 @@
 
 set -e
 
-echo "build source package"
-dpkg-source -b .
-
 echo "install build deps"
 mk-build-deps --install --tool='apt-get -o Debug::pkgProblemResolver=yes --no-install-recommends --yes' debian/control
 
+echo "apply patches"
+quilt push -a 
 echo "test binary build"
-quilt push -a
 fakeroot debian/rules clean
 fakeroot debian/rules binary
 

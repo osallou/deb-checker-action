@@ -17,7 +17,7 @@ fakeroot debian/rules binary
 
 
 
-if [ "a$1" == "atrue"]; then
+if [ "a$1" == "atrue" ]; then
   lintian -I --pedantic --fail-on-warnings ../*.deb
 else
   lintian -I --pedantic  ../*.deb
